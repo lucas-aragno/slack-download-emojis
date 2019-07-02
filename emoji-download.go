@@ -11,24 +11,24 @@ import (
 
 var SLACK_TOKEN string = os.Getenv("SLACK_TOKEN") 
 
-func check (e error) {
+func Check (e error) {
     if e != nil {
         panic(e)
     }
 }
 
-func getImage (emojiName string, url string) {
+func GetImage (emojiName string, url string) {
     client := &http.Client{}
     resp, body, err := goreq.New().SetClient(client).Get(url).End()
 
     if (err == nil && resp.StatusCode == 200) {
         var name string = fmt.Sprintf("emojis/%s.png", emojiName)
         err := ioutil.WriteFile(name, []byte(body), 0644)
-        check(err)
+        Check(err)
     }
 }
 
-func download () {
+func Download () {
     var url string = fmt.Sprintf("https://slack.com/api/emoji.list?token=%s", SLACK_TOKEN) 
     client := &http.Client{}
     resp, body, err := goreq.New().SetClient(client).
@@ -47,11 +47,11 @@ func download () {
         emojis := jsonMap["emoji"].(map[string]interface{})
 
         for key, value := range emojis {
-            getImage(key, value.(string))
+            GetImage(key, value.(string))
         }
     }
 }
 
 func main () {
-    download()
+    Download()
 }
