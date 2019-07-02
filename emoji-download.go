@@ -28,7 +28,7 @@ func getImage (emojiName string, url string) {
     }
 }
 
-func download () {
+func DownloadEmojis () {
     var url string = fmt.Sprintf("https://slack.com/api/emoji.list?token=%s", SLACK_TOKEN) 
     client := &http.Client{}
     resp, body, err := goreq.New().SetClient(client).
@@ -53,5 +53,5 @@ func download () {
 }
 
 func main () {
-    download()
+    DownloadEmojis()
 }
